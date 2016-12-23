@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">MusicPlayer</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_full_list">Songs</string>
+    <string name="nav_item_favourites">Favourites</string>
+
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_full_list</item>
+        <item>@string/nav_item_favourites</item>
+    </string-array>
+
+    <string name="title_full_list">All songs</string>
+    <string name="title_favourites">Favourites</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

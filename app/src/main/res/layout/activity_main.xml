@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:id="@+id/activity_main">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/songPlayer"
+        android:layout_height="100dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@+id/app_bar"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvSongNamePlayer"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:padding="10dp" />
+
+
+        <Button
+            android:text="Previous"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bPrev"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:gravity="bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:text="Next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bNext"
+            android:elevation="0dp"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
+            android:layout_alignBaseline="@+id/bPrev"
+            android:layout_alignBottom="@+id/bPrev"
+            android:layout_alignParentEnd="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/star_black"
+            android:layout_above="@+id/bNext"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/imgFavourite"
+            android:background="@color/colorPrimaryDark" />
+
+        <Button
+            android:text="Play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bPlay"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_alignBaseline="@+id/bPrev"
+            android:layout_alignBottom="@+id/bPrev"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:clipChildren="true"
+        android:id="@+id/rvSongs"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/songPlayer" />
+
+
+</RelativeLayout>
