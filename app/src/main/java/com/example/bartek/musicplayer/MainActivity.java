@@ -1,5 +1,6 @@
 package com.example.bartek.musicplayer;
 
+import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
             MusicBinder binder = (MusicBinder) service;
 
             musicPlayer = binder.getService();
-            musicPlayer.setList(songList);
 
             if (musicPlayer != null) {
                 Log.i("service-bind", "Service is bonded successfully!");
@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         bNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicPlayer.setList(songList);
+
                 imgFavourite.setVisibility(View.VISIBLE);
                 if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
@@ -139,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         bPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicPlayer.setList(songList);
+
                 imgFavourite.setVisibility(View.VISIBLE);
                 if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
@@ -162,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
         bPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                musicPlayer.setList(songList);
+
                 imgFavourite.setVisibility(View.VISIBLE);
                 if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
@@ -213,8 +219,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(getApplicationContext(),FavouritesActivity.class));
+        if (id == R.id.favourites) {
+            Intent intent = new Intent(getApplicationContext(),FavouritesActivity.class);
+            intent.putExtra("isBound",musicBound);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -232,7 +240,9 @@ public class MainActivity extends AppCompatActivity {
 
             bindService(playIntent, connection, Context.BIND_AUTO_CREATE);
             Log.e("service", "start");
-            startService(playIntent);
+            if(isMyServiceRunning(MusicPlayer.class)){
+                startService(playIntent);
+            }
 
 
             if (musicPlayer == null) {
@@ -311,6 +321,7 @@ public class MainActivity extends AppCompatActivity {
             holder.bPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    musicPlayer.setList(songList);
 
                     imgFavourite.setVisibility(View.VISIBLE);
                     if (mMusicPlayer == null) {
@@ -334,5 +345,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
