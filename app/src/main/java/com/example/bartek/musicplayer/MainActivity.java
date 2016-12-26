@@ -31,7 +31,6 @@ import com.example.bartek.musicplayer.MusicPlayer.MusicBinder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -111,23 +110,23 @@ public class MainActivity extends AppCompatActivity {
         rvSongs = (RecyclerView) findViewById(R.id.rvSongs);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 musicPlayer.setList(songList);
+                rvSongs.scrollToPosition(musicPlayer.getSongNum() + 1);
 
+                if (musicPlayer.getSongNum() != songList.size() - 1) {
+                    musicPlayer.setSong(musicPlayer.getSongNum() + 1);
+                } else {
+                    musicPlayer.setSong(0);
+                }
                 imgFavourite.setVisibility(View.VISIBLE);
                 if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
                 } else {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_black));
-                }
-                if (musicPlayer.getSongNum() != songList.size() - 1) {
-                    musicPlayer.setSong(musicPlayer.getSongNum() + 1);
-                } else {
-                    musicPlayer.setSong(0);
                 }
                 try {
                     musicPlayer.playSong();
@@ -142,17 +141,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 musicPlayer.setList(songList);
+                rvSongs.scrollToPosition(musicPlayer.getSongNum() - 1);
 
+                if (musicPlayer.getSongNum() != 0) {
+                    musicPlayer.setSong(musicPlayer.getSongNum() - 1);
+                } else {
+                    musicPlayer.setSong(songList.size() - 1);
+                }
                 imgFavourite.setVisibility(View.VISIBLE);
                 if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
                 } else {
                     imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_black));
-                }
-                if (musicPlayer.getSongNum() != 0) {
-                    musicPlayer.setSong(musicPlayer.getSongNum() - 1);
-                } else {
-                    musicPlayer.setSong(songList.size());
                 }
                 try {
                     musicPlayer.playSong();
@@ -168,22 +168,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 musicPlayer.setList(songList);
 
-                imgFavourite.setVisibility(View.VISIBLE);
-                if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
-                    imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
-                } else {
-                    imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_black));
-                }
                 if (musicPlayer.isPlaying()) {
-                    bPlay.setText("Pause");
+                    bPlay.setText("Paused");
                     musicPlayer.setPause();
                 } else {
-                    bPlay.setText("Play");
+                    bPlay.setText("Playing");
                     try {
                         musicPlayer.playSong();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
+                imgFavourite.setVisibility(View.VISIBLE);
+                if (isFavourite(songList.get(musicPlayer.getSongNum()).getId())) {
+                    imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_gold));
+                } else {
+                    imgFavourite.setImageDrawable(getResources().getDrawable(R.drawable.star_black));
                 }
             }
         });
@@ -220,8 +220,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.favourites) {
-            Intent intent = new Intent(getApplicationContext(),FavouritesActivity.class);
-            intent.putExtra("isBound",musicBound);
+            Intent intent = new Intent(getApplicationContext(), FavouritesActivity.class);
+            intent.putExtra("isBound", musicBound);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
             bindService(playIntent, connection, Context.BIND_AUTO_CREATE);
             Log.e("service", "start");
-            if(isMyServiceRunning(MusicPlayer.class)){
+            if (isMyServiceRunning(MusicPlayer.class)) {
                 startService(playIntent);
             }
 
@@ -323,17 +323,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     musicPlayer.setList(songList);
 
-                    imgFavourite.setVisibility(View.VISIBLE);
-                    if (mMusicPlayer == null) {
-                        Log.e("position", pos.toString());
-                    }
-
                     mMusicPlayer.setSong(pos);
                     try {
                         mMusicPlayer.playSong();
                         tvSongNamePlayer.setText(songList.get(pos).getTitle());
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }
+                    imgFavourite.setVisibility(View.VISIBLE);
+                    if (mMusicPlayer == null) {
+                        Log.e("position", pos.toString());
                     }
                 }
             });

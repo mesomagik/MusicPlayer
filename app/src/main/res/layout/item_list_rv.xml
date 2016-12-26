@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_alignParentTop="true"
@@ -23,7 +23,10 @@
         android:id="@+id/bPlay"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimary"
+        android:padding="3dp"
+        android:layout_margin="2dp" />
 
     <TextView
         android:text="TextView"
@@ -33,6 +36,6 @@
         android:layout_alignParentStart="true"
         android:id="@+id/tvArtist"
         android:layout_toStartOf="@+id/bPlay"
-        android:textSize="15dp"/>
+        android:textSize="10dp"/>
 
 </RelativeLayout>

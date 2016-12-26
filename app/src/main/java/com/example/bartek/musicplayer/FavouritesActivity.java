@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -62,7 +63,6 @@ public class FavouritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favourites);
 
 
-
         rvFacourites = (RecyclerView) findViewById(R.id.rvFavourites);
         toolbar = (Toolbar) findViewById(R.id.app_bar);
 
@@ -101,18 +101,17 @@ public class FavouritesActivity extends AppCompatActivity {
         }
 
 
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if (playIntent == null){
-            playIntent = new Intent(getApplicationContext(),MusicPlayer.class);
-            bindService(playIntent,serviceConnection,Context.BIND_AUTO_CREATE);
+        if (playIntent == null) {
+            playIntent = new Intent(getApplicationContext(), MusicPlayer.class);
+            bindService(playIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
-            if(isMyServiceRunning(MusicPlayer.class)){
+            if (isMyServiceRunning(MusicPlayer.class)) {
                 startService(playIntent);
             }
         }
@@ -146,7 +145,7 @@ public class FavouritesActivity extends AppCompatActivity {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
-            View songView = inflater.inflate(R.layout.item_list_rv_favourites,parent,false);
+            View songView = inflater.inflate(R.layout.item_list_rv_favourites, parent, false);
             ViewHolder viewHolder = new ViewHolder(songView);
 
             return viewHolder;
@@ -193,6 +192,7 @@ public class FavouritesActivity extends AppCompatActivity {
             return songFavourites.size();
         }
     }
+
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
@@ -201,5 +201,16 @@ public class FavouritesActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            onBackPressed();  return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
